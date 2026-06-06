@@ -1,1 +1,1 @@
-body{background:#050816;color:white;font-family:Arial,sans-serif;padding:40px}
+body{margin:0;background:linear-gradient(135deg,#020617,#050b2d,#16002f);color:#fff;font-family:Arial}nav{display:flex;justify-content:space-between;padding:20px}.hero{padding:80px}.hero h1{font-size:80px}.hero span{color:#a855f7}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:20px}

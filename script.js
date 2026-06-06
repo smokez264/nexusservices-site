@@ -1,1 +1,1 @@
-console.log('Nexus Services loaded');
+console.log('loaded')
