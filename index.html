@@ -1,51 +1,59 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nexus Services</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Services</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<div id="snow"></div>
+
 <nav>
   <div class="logo">NEXUS SERVICES</div>
-  <ul>
-    <li><a href="#">Home</a></li>
-    <li><a href="#store">Store</a></li>
-    <li><a href="#reviews">Reviews</a></li>
-  </ul>
-  <a href="https://discord.gg/V7c6vZ2N" class="btn">Join Discord</a>
+  <div class="navlinks">
+    <a href="#store">Store</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#discord">Discord</a>
+  </div>
+  <a class="btn" href="https://discord.gg/V7c6vZ2N">Join Discord</a>
 </nav>
 
 <section class="hero">
-  <div class="hero-text">
-    <h1>NEXUS <span>SERVICES</span></h1>
-    <p>High quality FiveM services, lookups, tools and more.</p>
-  </div>
+  <h1>NEXUS <span>SERVICES</span></h1>
+  <p>Premium FiveM Services • Lookups • Tools • Development</p>
 </section>
 
 <section class="stats">
-  <div>99.9% Uptime</div>
-  <div>24/7 Support</div>
-  <div>500+ Customers</div>
-  <div>100% Secure</div>
+  <div class="card"><h2>99.9%</h2><p>Uptime</p></div>
+  <div class="card"><h2>24/7</h2><p>Support</p></div>
+  <div class="card"><h2>500+</h2><p>Customers</p></div>
+  <div class="card"><h2>100%</h2><p>Secure</p></div>
 </section>
 
 <section id="store">
-  <h2>NEXUS STORE</h2>
-  <div class="cards">
-    <div class="card">Premium Lookup - €4.99</div>
-    <div class="card">FiveM Ready Account - €9.99</div>
-    <div class="card">Discord Bot - €15</div>
-    <div class="card">FiveM Development - €10</div>
-  </div>
+<h2>Store</h2>
+<div class="grid">
+<div class="card product"><h3>Premium Lookup</h3><p>Fast lookup access</p><b>€4.99</b></div>
+<div class="card product"><h3>FiveM Account</h3><p>Ready to use</p><b>€9.99</b></div>
+<div class="card product"><h3>Discord Bot</h3><p>Custom development</p><b>€15+</b></div>
+<div class="card product"><h3>FiveM Dev</h3><p>Scripts & fixes</p><b>€10+</b></div>
+</div>
 </section>
 
 <section id="reviews">
-  <h2>Reviews</h2>
-  <div class="card">⭐⭐⭐⭐⭐ Snelle levering!</div>
-  <div class="card">⭐⭐⭐⭐⭐ Goede service!</div>
+<h2>Reviews</h2>
+<div class="grid">
+<div class="card">⭐⭐⭐⭐⭐<br>Snelle levering!</div>
+<div class="card">⭐⭐⭐⭐⭐<br>Top support!</div>
+<div class="card">⭐⭐⭐⭐⭐<br>Goede prijzen!</div>
+</div>
+</section>
+
+<section id="discord">
+<h2>Discord</h2>
+<iframe src="https://discord.com/widget?id=1512444686126682163&theme=dark" width="350" height="500"></iframe>
 </section>
 
 <script src="script.js"></script>
