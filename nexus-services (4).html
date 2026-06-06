@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Services – Premium FiveM Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+:root {
+  --bg: #060812;
+  --bg1: #080c18;
+  --bg2: #0c1220;
+  --bg3: #101828;
+  --card: #0e1628;
+  --card-border: rgba(255,255,255,0.06);
+  --card-hover: rgba(255,255,255,0.09);
+  --blue: #3b82f6;
+  --blue-glow: rgba(59,130,246,0.35);
+  --cyan: #06b6d4;
+  --purple: #a855f7;
+  --pink: #ec4899;
+  --green: #22c55e;
+  --yellow: #eab308;
+  --red: #ef4444;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --muted2: #94a3b8;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Exo 2', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ── CANVAS BACKGROUND ── */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  background: rgba(6,8,18,0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(59,130,246,0.12);
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.logo-mark {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, #1d4ed8, #7c3aed);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 0 24px rgba(59,130,246,0.5);
+}
+.logo-mark svg { width:26px; height:26px; fill:white; }
+.logo-text-block { line-height:1.1; }
+.logo-text-block .lt { font-family:'Orbitron',sans-serif; font-weight:700; font-size:15px; color:#fff; letter-spacing:2px; }
+.logo-text-block .ls { font-size:10px; color:var(--muted); letter-spacing:4px; text-transform:uppercase; }
+
+.nav-menu { display:flex; gap:36px; list-style:none; }
+.nav-menu a { color:var(--muted2); font-size:14px; font-weight:600; letter-spacing:0.3px; text-decoration:none; transition:color .2s; position:relative; }
+.nav-menu a:hover, .nav-menu a.active { color:#fff; }
+.nav-menu a.active::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px; background:var(--blue); border-radius:2px; }
+
+.btn-nav {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:9px 20px; border-radius:8px;
+  background:#5865F2; color:#fff;
+  font-family:'Exo 2',sans-serif; font-weight:700; font-size:14px;
+  letter-spacing:0.3px; cursor:pointer; border:none; text-decoration:none;
+  box-shadow:0 0 20px rgba(88,101,242,0.35);
+  transition:all .2s;
+}
+.btn-nav:hover { background:#4752c4; box-shadow:0 0 30px rgba(88,101,242,0.55); transform:translateY(-1px); }
+
+/* ── HERO ── */
+#home {
+  position:relative; z-index:1;
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  padding:100px 80px 80px;
+  gap:40px;
+  overflow:hidden;
+}
+
+.hero-bg-glow {
+  position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 55% 60% at 72% 48%, rgba(59,130,246,0.09) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 50% at 28% 70%, rgba(168,85,247,0.06) 0%, transparent 55%);
+}
+
+/* tree silhouette */
+.hero-trees {
+  position:absolute; bottom:0; left:0; right:0; height:180px;
+  background:
+    linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+  pointer-events:none;
+}
+
+.hero-left { position:relative; z-index:2; }
+
+.hero-tag {
+  display:flex; align-items:center; gap:10px;
+  font-size:12px; font-weight:700; letter-spacing:4px; text-transform:uppercase;
+  color:var(--cyan); margin-bottom:20px;
+}
+.hero-tag .dot { color:rgba(255,255,255,0.3); }
+
+h1.hero-title {
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:clamp(52px,5.5vw,88px);
+  line-height:0.95;
+  color:#fff;
+  margin-bottom:2px;
+  text-shadow:0 0 80px rgba(59,130,246,0.25);
+}
+h1.hero-title-2 {
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:clamp(52px,5.5vw,88px);
+  line-height:0.95;
+  margin-bottom:28px;
+  background:linear-gradient(100deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.hero-desc {
+  font-size:17px; line-height:1.65;
+  color:rgba(226,232,240,0.65);
+  font-weight:300;
+  margin-bottom:36px;
+  max-width:440px;
+}
+
+.hero-btns { display:flex; gap:14px; margin-bottom:52px; flex-wrap:wrap; }
+
+.btn {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:13px 26px; border-radius:9px;
+  font-family:'Exo 2',sans-serif; font-weight:700; font-size:15px;
+  letter-spacing:0.3px; cursor:pointer; border:none; text-decoration:none;
+  transition:all .25s;
+}
+.btn-primary { background:#5865F2; color:#fff; box-shadow:0 0 24px rgba(88,101,242,0.4); }
+.btn-primary:hover { background:#4752c4; transform:translateY(-2px); box-shadow:0 6px 32px rgba(88,101,242,0.55); }
+.btn-ghost { background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.22); }
+.btn-ghost:hover { border-color:rgba(255,255,255,0.5); background:rgba(255,255,255,0.05); }
+.btn-blue { background:var(--blue); color:#fff; }
+.btn-blue:hover { background:#2563eb; box-shadow:0 4px 24px rgba(59,130,246,0.45); }
+.btn-purple { background:#7c3aed; color:#fff; }
+.btn-purple:hover { background:#6d28d9; box-shadow:0 4px 24px rgba(124,58,237,0.45); }
+.btn-crimson { background:#c2162b; color:#fff; }
+.btn-crimson:hover { background:#a0112a; box-shadow:0 4px 24px rgba(194,22,43,0.45); }
+.btn-emerald { background:#059669; color:#fff; }
+.btn-emerald:hover { background:#047857; box-shadow:0 4px 24px rgba(5,150,105,0.45); }
+.btn-discord-green { background:#3ba55c; color:#fff; }
+.btn-discord-green:hover { background:#2d8a4c; }
+.btn-full { width:100%; justify-content:center; }
+
+.hero-perks { display:flex; gap:32px; flex-wrap:wrap; }
+.perk { display:flex; align-items:center; gap:9px; font-size:14px; font-weight:600; color:rgba(226,232,240,0.7); }
+.perk-icon { font-size:16px; }
+
+/* 3-D NEXUS N */
+.hero-right { position:relative; z-index:2; display:flex; align-items:center; justify-content:center; }
+.n3d-wrap { position:relative; animation:float3d 5s ease-in-out infinite; }
+@keyframes float3d { 0%,100%{transform:translateY(0) rotate(-1deg)} 50%{transform:translateY(-22px) rotate(1deg)} }
+
+.n3d-box {
+  width:300px; height:300px;
+  border-radius:40px;
+  background:linear-gradient(140deg, #1e3a8a 0%, #2563eb 35%, #6d28d9 70%, #9333ea 100%);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Orbitron',sans-serif; font-weight:900; font-size:180px;
+  color:rgba(255,255,255,0.95);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.12),
+    0 0 60px rgba(59,130,246,0.6),
+    0 0 120px rgba(147,51,234,0.35),
+    0 30px 80px rgba(0,0,0,0.6);
+  position:relative; overflow:hidden;
+  text-shadow:0 6px 32px rgba(0,0,0,0.5);
+}
+.n3d-box::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:50%;
+  background:linear-gradient(to bottom, rgba(255,255,255,0.18), transparent);
+  border-radius:40px 40px 0 0;
+}
+.n3d-platform {
+  position:absolute; bottom:-18px; left:50%; transform:translateX(-50%);
+  width:220px; height:24px;
+  background:radial-gradient(ellipse, rgba(59,130,246,0.7) 0%, transparent 70%);
+  filter:blur(10px);
+  animation:glow3d 3s ease-in-out infinite;
+}
+@keyframes glow3d { 0%,100%{opacity:.45;transform:translateX(-50%) scaleX(0.8)} 50%{opacity:1;transform:translateX(-50%) scaleX(1.1)} }
+
+/* ring decorations */
+.n3d-ring {
+  position:absolute; border-radius:50%;
+  border:1px solid rgba(59,130,246,0.2);
+  animation:ring-pulse 4s ease-in-out infinite;
+}
+.r1 { width:380px;height:380px; top:50%;left:50%; transform:translate(-50%,-50%); animation-delay:0s; }
+.r2 { width:460px;height:460px; top:50%;left:50%; transform:translate(-50%,-50%); animation-delay:.8s; }
+@keyframes ring-pulse { 0%{opacity:.5;transform:translate(-50%,-50%) scale(.85)} 100%{opacity:0;transform:translate(-50%,-50%) scale(1.15)} }
+
+/* snowflakes overlay */
+.snow-wrap { position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
+.flake { position:absolute; top:-20px; font-size:var(--fs); color:rgba(160,210,255,0.55); animation:snow-fall var(--dur) linear infinite var(--delay); }
+@keyframes snow-fall { to { transform:translateY(110vh) rotate(360deg); opacity:0; } }
+
+/* ── STATS BAR ── */
+.stats-wrap {
+  position:relative; z-index:2;
+  margin:0 48px;
+  background:rgba(14,22,40,0.85);
+  border:1px solid rgba(59,130,246,0.13);
+  border-radius:14px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  backdrop-filter:blur(16px);
+  overflow:hidden;
+}
+.stat-cell {
+  display:flex; align-items:center; gap:16px;
+  padding:26px 30px;
+  border-right:1px solid rgba(255,255,255,0.05);
+  transition:background .25s;
+}
+.stat-cell:last-child { border-right:none; }
+.stat-cell:hover { background:rgba(59,130,246,0.05); }
+.stat-ico {
+  width:46px; height:46px; border-radius:12px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:22px;
+}
+.ico-g { background:rgba(34,197,94,0.14); }
+.ico-y { background:rgba(234,179,8,0.14); }
+.ico-p { background:rgba(168,85,247,0.14); }
+.ico-b { background:rgba(59,130,246,0.14); }
+.stat-val { font-family:'Orbitron',sans-serif; font-weight:700; font-size:28px; color:#fff; line-height:1; }
+.stat-lbl { font-size:13px; color:var(--muted); margin-top:3px; font-weight:500; }
+
+/* ── STORE ── */
+.store-section { position:relative; z-index:2; padding:80px 48px; }
+
+.section-head { text-align:center; margin-bottom:52px; }
+.section-eyebrow {
+  display:flex; align-items:center; justify-content:center; gap:14px;
+  font-size:12px; font-weight:700; letter-spacing:4px; text-transform:uppercase;
+  color:var(--cyan); margin-bottom:14px;
+}
+.eyebrow-line { width:50px; height:1px; background:linear-gradient(90deg,transparent,var(--cyan)); }
+.eyebrow-line.right { background:linear-gradient(90deg,var(--cyan),transparent); }
+.section-eyebrow span:first-child, .section-eyebrow span:last-child { display:flex; align-items:center; }
+
+.section-h2 { font-family:'Orbitron',sans-serif; font-weight:700; font-size:clamp(22px,3vw,34px); color:#fff; margin-bottom:10px; }
+.section-sub { color:var(--muted); font-size:16px; }
+
+.store-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:20px;
+  max-width:1200px; margin:0 auto;
+}
+
+.prod-card {
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:16px; padding:28px 22px;
+  position:relative; overflow:hidden;
+  transition:transform .3s, box-shadow .3s, border-color .3s;
+  cursor:pointer;
+}
+.prod-card::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  opacity:0; transition:opacity .3s;
+}
+.prod-card:hover { transform:translateY(-6px); border-color:rgba(255,255,255,0.12); }
+.prod-card:hover::after { opacity:1; }
+
+.pc-blue::after { background:linear-gradient(90deg,#3b82f6,#06b6d4); }
+.pc-blue:hover { box-shadow:0 24px 60px rgba(59,130,246,0.18); }
+.pc-purple::after { background:linear-gradient(90deg,#7c3aed,#a855f7); }
+.pc-purple:hover { box-shadow:0 24px 60px rgba(124,58,237,0.18); }
+.pc-red::after { background:linear-gradient(90deg,#c2162b,#ef4444); }
+.pc-red:hover { box-shadow:0 24px 60px rgba(194,22,43,0.18); }
+.pc-green::after { background:linear-gradient(90deg,#059669,#22c55e); }
+.pc-green:hover { box-shadow:0 24px 60px rgba(5,150,105,0.18); }
+
+.prod-ico {
+  width:60px; height:60px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:28px; margin-bottom:18px;
+}
+.pio-b { background:rgba(59,130,246,0.18); }
+.pio-p { background:rgba(124,58,237,0.18); }
+.pio-r { background:rgba(194,22,43,0.18); }
+.pio-g { background:rgba(5,150,105,0.18); }
+
+.prod-name { font-weight:700; font-size:18px; color:#fff; margin-bottom:8px; }
+.prod-desc { font-size:13px; color:var(--muted); line-height:1.55; margin-bottom:22px; }
+.prod-price { font-family:'Orbitron',sans-serif; font-size:22px; font-weight:700; color:#fff; margin-bottom:18px; }
+
+/* ── THREE COLUMNS ── */
+.bottom-section { position:relative; z-index:2; padding:10px 48px 80px; }
+.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:22px; max-width:1200px; margin:0 auto; }
+
+.panel {
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:16px; padding:26px;
+}
+.panel-head {
+  display:flex; align-items:center; gap:10px;
+  font-family:'Orbitron',sans-serif; font-weight:700; font-size:13px; letter-spacing:1px;
+  color:#fff; margin-bottom:22px;
+  text-transform:uppercase;
+}
+.panel-head-icon { font-size:18px; }
+
+/* reviews */
+.review { padding-bottom:18px; margin-bottom:18px; border-bottom:1px solid rgba(255,255,255,0.05); }
+.review:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.stars { color:#eab308; font-size:13px; margin-bottom:5px; }
+.review-q { font-size:13.5px; font-style:italic; color:rgba(226,232,240,0.85); margin-bottom:3px; line-height:1.45; }
+.review-by { font-size:12px; color:var(--muted); }
+
+/* bot */
+.bot-row {
+  display:flex; align-items:center; gap:14px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--card-border);
+  border-radius:12px; padding:14px 16px; margin-bottom:20px;
+}
+.bot-avatar {
+  width:46px;height:46px; border-radius:50%;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  display:flex;align-items:center;justify-content:center; font-size:24px;
+  flex-shrink:0;
+}
+.bot-name { font-weight:700; font-size:15px; color:#fff; display:flex; align-items:center; gap:7px; }
+.bot-badge { background:#5865F2; color:#fff; font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; letter-spacing:1px; }
+.bot-online { color:#22c55e; font-size:13px; font-weight:600; margin-top:2px; display:flex; align-items:center; gap:5px; }
+.online-dot { width:7px;height:7px; border-radius:50%; background:#22c55e; display:inline-block; }
+
+.bot-stat {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:11px 0; border-bottom:1px solid rgba(255,255,255,0.05);
+  font-size:14px;
+}
+.bot-stat:last-of-type { border-bottom:none; }
+.bsl { color:var(--muted); display:flex; align-items:center; gap:8px; }
+.bsv { font-weight:700; color:#fff; }
+
+/* discord panel */
+.dc-card {
+  background:#36393f; border-radius:10px; overflow:hidden; margin-bottom:14px;
+}
+.dc-top {
+  background:#2f3136; padding:10px 14px;
+  display:flex; align-items:center; justify-content:space-between;
+  font-size:14px; font-weight:600;
+}
+.dc-top .dc-icon { color:#5865F2; margin-right:8px; }
+.dc-members { font-size:12px; color:#72767d; }
+.dc-body {
+  padding:24px 14px; display:flex; align-items:center; justify-content:center;
+  gap:8px;
+}
+.dc-dot {
+  width:9px;height:9px;border-radius:50%;background:#5865F2;
+  animation:dc-pulse .9s ease-in-out infinite;
+}
+.dc-dot:nth-child(2){animation-delay:.18s}
+.dc-dot:nth-child(3){animation-delay:.36s}
+@keyframes dc-pulse{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(-8px);opacity:1}}
+.dc-bot {
+  background:#2f3136; padding:10px 14px;
+  display:flex; align-items:center; justify-content:space-between;
+  font-size:13px; color:#72767d;
+}
+
+/* ── FOOTER ── */
+footer {
+  position:relative; z-index:2;
+  border-top:1px solid rgba(255,255,255,0.06);
+  padding:36px 48px;
+  display:flex; align-items:center; justify-content:space-between;
+  background:rgba(6,8,18,0.9);
+}
+.footer-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+.footer-mid { text-align:center; }
+.footer-copy { font-size:13px; color:var(--muted); margin-bottom:8px; }
+.footer-links { display:flex; gap:18px; justify-content:center; }
+.footer-links a { color:var(--muted); font-size:13px; text-decoration:none; transition:color .2s; }
+.footer-links a:hover { color:#fff; }
+.footer-socials { display:flex; gap:12px; }
+.soc-btn {
+  width:36px;height:36px; border-radius:8px; border:1px solid rgba(255,255,255,0.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px; color:var(--muted); text-decoration:none;
+  transition:all .2s; background:transparent; cursor:pointer;
+}
+.soc-btn:hover { border-color:var(--blue); color:#fff; background:rgba(59,130,246,0.1); }
+
+/* ── ANIMATIONS ── */
+.fade-in { opacity:0; transform:translateY(28px); transition:opacity .65s ease, transform .65s ease; }
+.fade-in.show { opacity:1; transform:translateY(0); }
+.fade-in:nth-child(2){transition-delay:.1s}
+.fade-in:nth-child(3){transition-delay:.2s}
+.fade-in:nth-child(4){transition-delay:.3s}
+</style>
+</head>
+<body>
+
+<!-- animated star canvas -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- snowflakes -->
+<div class="snow-wrap" id="snow-wrap"></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#home" class="logo-wrap">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M4 4l6 16 6-16M4 4h16"/></svg>
+    </div>
+    <div class="logo-text-block">
+      <div class="lt">NEXUS</div>
+      <div class="ls">SERVICES</div>
+    </div>
+  </a>
+
+  <ul class="nav-menu">
+    <li><a href="#home" class="active">Home</a></li>
+    <li><a href="#store">Store</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+
+  <a href="https://discord.gg/QcFmAgMBFc" target="_blank" class="btn-nav">
+    <svg width="18" height="14" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.6.5a40.5 40.5 0 0 0-1.8 3.7 54.2 54.2 0 0 0-16.2 0A41.3 41.3 0 0 0 25.8.5 58.4 58.4 0 0 0 11.2 4.9C1.6 19.2-1 33.1.3 46.8a58.9 58.9 0 0 0 18 9.1 44.2 44.2 0 0 0 3.8-6.2 38.4 38.4 0 0 1-6-2.9l1.5-1.1a42 42 0 0 0 36 0l1.4 1.1a38.4 38.4 0 0 1-6 2.9 44 44 0 0 0 3.8 6.2 58.7 58.7 0 0 0 18-9.1C71 31.1 67.7 17.3 60.1 4.9ZM23.7 38.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 4-2.8 7.2-6.4 7.2Zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.4 3.2 6.4 7.2-2.8 7.2-6.4 7.2Z"/></svg>
+    Join Discord
+  </a>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="home">
+  <div class="hero-bg-glow"></div>
+  <div class="hero-trees"></div>
+
+  <div class="hero-left">
+    <div class="hero-tag">
+      PREMIUM <span class="dot">•</span> FAST <span class="dot">•</span> RELIABLE
+    </div>
+    <h1 class="hero-title">NEXUS</h1>
+    <h1 class="hero-title-2">SERVICES</h1>
+    <p class="hero-desc">High quality FiveM services, lookups, tools and more.<br>Trusted by 500+ customers worldwide.</p>
+
+    <div class="hero-btns">
+      <a href="https://discord.gg/QcFmAgMBFc" target="_blank" class="btn btn-primary">
+        <svg width="18" height="14" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.6.5a40.5 40.5 0 0 0-1.8 3.7 54.2 54.2 0 0 0-16.2 0A41.3 41.3 0 0 0 25.8.5 58.4 58.4 0 0 0 11.2 4.9C1.6 19.2-1 33.1.3 46.8a58.9 58.9 0 0 0 18 9.1 44.2 44.2 0 0 0 3.8-6.2 38.4 38.4 0 0 1-6-2.9l1.5-1.1a42 42 0 0 0 36 0l1.4 1.1a38.4 38.4 0 0 1-6 2.9 44 44 0 0 0 3.8 6.2 58.7 58.7 0 0 0 18-9.1C71 31.1 67.7 17.3 60.1 4.9ZM23.7 38.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 4-2.8 7.2-6.4 7.2Zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.4 3.2 6.4 7.2-2.8 7.2-6.4 7.2Z"/></svg>
+        Join Our Discord
+      </a>
+      <a href="#store" class="btn btn-ghost">🛒 Browse Store</a>
+    </div>
+
+    <div class="hero-perks">
+      <div class="perk"><span class="perk-icon">🎧</span>24/7 Support</div>
+      <div class="perk"><span class="perk-icon">⚡</span>Instant Delivery</div>
+      <div class="perk"><span class="perk-icon">🛡️</span>100% Safe</div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="n3d-wrap">
+      <div class="n3d-ring r1"></div>
+      <div class="n3d-ring r2"></div>
+      <div class="n3d-box">N</div>
+      <div class="n3d-platform"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS BAR ── -->
+<div class="stats-wrap">
+  <div class="stat-cell fade-in">
+    <div class="stat-ico ico-g">🛡️</div>
+    <div><div class="stat-val">50%</div><div class="stat-lbl">Uptime</div></div>
+  </div>
+  <div class="stat-cell fade-in">
+    <div class="stat-ico ico-y">⚡</div>
+    <div><div class="stat-val">24/7</div><div class="stat-lbl">Support</div></div>
+  </div>
+  <div class="stat-cell fade-in">
+    <div class="stat-ico ico-p">👥</div>
+    <div><div class="stat-val">2</div><div class="stat-lbl">Happy Customers</div></div>
+  </div>
+  <div class="stat-cell fade-in">
+    <div class="stat-ico ico-b">🔒</div>
+    <div><div class="stat-val">100%</div><div class="stat-lbl">Secure</div></div>
+  </div>
+</div>
+
+<!-- ── STORE ── -->
+<section class="store-section" id="store">
+  <div class="section-head">
+    <div class="section-eyebrow">
+      <span><div class="eyebrow-line"></div></span>
+      🛒 NEXUS STORE
+      <span><div class="eyebrow-line right"></div></span>
+    </div>
+    <h2 class="section-h2">NEXUS STORE</h2>
+    <p class="section-sub">Premium products at the best prices.</p>
+  </div>
+
+  <div class="store-grid">
+    <div class="prod-card pc-blue fade-in">
+      <div class="prod-ico pio-b">🔍</div>
+      <div class="prod-name">Premium Lookup</div>
+      <div class="prod-desc">Fast and accurate lookup services.</div>
+      <div class="prod-price">€4.99</div>
+      <a href="#" class="btn btn-blue btn-full">🛒 Buy Now</a>
+    </div>
+    <div class="prod-card pc-purple fade-in">
+      <div class="prod-ico pio-p">🎮</div>
+      <div class="prod-name">FiveM Ready Account</div>
+      <div class="prod-desc">High quality FiveM ready-to-use accounts.</div>
+      <div class="prod-price">€9.99</div>
+      <a href="#" class="btn btn-purple btn-full">🛒 Buy Now</a>
+    </div>
+    <div class="prod-card pc-red fade-in">
+      <div class="prod-ico pio-r">🤖</div>
+      <div class="prod-name">Custom Discord Bot</div>
+      <div class="prod-desc">Professional Discord bot development.</div>
+      <div class="prod-price">From €15</div>
+      <a href="#" class="btn btn-crimson btn-full">🛒 Buy Now</a>
+    </div>
+    <div class="prod-card pc-green fade-in">
+      <div class="prod-ico pio-g" style="font-family:monospace;font-size:22px;font-weight:700;color:#22c55e">&lt;/&gt;</div>
+      <div class="prod-name">FiveM Development</div>
+      <div class="prod-desc">Scripts, fixes and server setup.</div>
+      <div class="prod-price">From €10</div>
+      <a href="#" class="btn btn-emerald btn-full">🛒 Buy Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── BOTTOM 3 COLUMNS ── -->
+<div class="bottom-section" id="reviews">
+  <div class="three-col">
+
+    <!-- REVIEWS -->
+    <div class="panel fade-in">
+      <div class="panel-head">
+        <span class="panel-head-icon" style="color:#eab308">★</span> CUSTOMER REVIEWS
+      </div>
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <div class="review-q">"Snelle levering en uitstekende support."</div>
+        <div class="review-by">– Mike</div>
+      </div>
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <div class="review-q">"Goede prijzen en betrouwbare services."</div>
+        <div class="review-by">– Lars</div>
+      </div>
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <div class="review-q">"Binnen enkele minuten geholpen."</div>
+        <div class="review-by">– Dylan</div>
+      </div>
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <div class="review-q">"Zeker een aanrader voor FiveM services."</div>
+        <div class="review-by">– Kevin</div>
+      </div>
+    </div>
+
+    <!-- BOT STATUS -->
+    <div class="panel fade-in">
+      <div class="panel-head"><span class="panel-head-icon">🤖</span> BOT STATUS</div>
+      <div class="bot-row">
+        <div class="bot-avatar">🤖</div>
+        <div>
+          <div class="bot-name">Nexus Bot <span class="bot-badge">BOT</span></div>
+          <div class="bot-online"><span class="online-dot"></span>Online</div>
+        </div>
+      </div>
+      <div class="bot-stat"><span class="bsl">🖥️ Servers</span><span class="bsv">125</span></div>
+      <div class="bot-stat"><span class="bsl">👥 Users</span><span class="bsv">8,247</span></div>
+      <div class="bot-stat"><span class="bsl">⏱️ Uptime</span><span class="bsv" style="color:#22c55e">99.9%</span></div>
+      <div style="margin-top:20px">
+        <a href="https://discord.gg/QcFmAgMBFc" target="_blank" class="btn btn-discord-green btn-full">
+          <svg width="16" height="12" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.6.5a40.5 40.5 0 0 0-1.8 3.7 54.2 54.2 0 0 0-16.2 0A41.3 41.3 0 0 0 25.8.5 58.4 58.4 0 0 0 11.2 4.9C1.6 19.2-1 33.1.3 46.8a58.9 58.9 0 0 0 18 9.1 44.2 44.2 0 0 0 3.8-6.2 38.4 38.4 0 0 1-6-2.9l1.5-1.1a42 42 0 0 0 36 0l1.4 1.1a38.4 38.4 0 0 1-6 2.9 44 44 0 0 0 3.8 6.2 58.7 58.7 0 0 0 18-9.1C71 31.1 67.7 17.3 60.1 4.9ZM23.7 38.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 4-2.8 7.2-6.4 7.2Zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.4 3.2 6.4 7.2-2.8 7.2-6.4 7.2Z"/></svg>
+          Invite Bot
+        </a>
+      </div>
+    </div>
+
+    <!-- DISCORD -->
+    <div class="panel fade-in">
+      <div class="panel-head">
+        <span style="color:#5865F2">
+          <svg width="18" height="14" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.6.5a40.5 40.5 0 0 0-1.8 3.7 54.2 54.2 0 0 0-16.2 0A41.3 41.3 0 0 0 25.8.5 58.4 58.4 0 0 0 11.2 4.9C1.6 19.2-1 33.1.3 46.8a58.9 58.9 0 0 0 18 9.1 44.2 44.2 0 0 0 3.8-6.2 38.4 38.4 0 0 1-6-2.9l1.5-1.1a42 42 0 0 0 36 0l1.4 1.1a38.4 38.4 0 0 1-6 2.9 44 44 0 0 0 3.8 6.2 58.7 58.7 0 0 0 18-9.1C71 31.1 67.7 17.3 60.1 4.9ZM23.7 38.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 4-2.8 7.2-6.4 7.2Zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.4 3.2 6.4 7.2-2.8 7.2-6.4 7.2Z"/></svg>
+        </span>
+        JOIN OUR DISCORD
+      </div>
+      <div class="dc-card">
+        <div class="dc-top">
+          <span>
+            <span class="dc-icon">
+              <svg width="16" height="12" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.6.5a40.5 40.5 0 0 0-1.8 3.7 54.2 54.2 0 0 0-16.2 0A41.3 41.3 0 0 0 25.8.5 58.4 58.4 0 0 0 11.2 4.9C1.6 19.2-1 33.1.3 46.8a58.9 58.9 0 0 0 18 9.1 44.2 44.2 0 0 0 3.8-6.2 38.4 38.4 0 0 1-6-2.9l1.5-1.1a42 42 0 0 0 36 0l1.4 1.1a38.4 38.4 0 0 1-6 2.9 44 44 0 0 0 3.8 6.2 58.7 58.7 0 0 0 18-9.1C71 31.1 67.7 17.3 60.1 4.9ZM23.7 38.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 4-2.8 7.2-6.4 7.2Zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.4 3.2 6.4 7.2-2.8 7.2-6.4 7.2Z"/></svg>
+            </span>
+            Discord
+          </span>
+          <span class="dc-members" id="dc-members">Laden...</span>
+        </div>
+        <div style="background:#36393f;border-radius:10px;padding:20px 16px;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+            <div style="width:52px;height:52px;border-radius:50%;background:#5865F2;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="28" height="22" viewBox="0 0 71 55" fill="white"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.6.5a40.5 40.5 0 0 0-1.8 3.7 54.2 54.2 0 0 0-16.2 0A41.3 41.3 0 0 0 25.8.5 58.4 58.4 0 0 0 11.2 4.9C1.6 19.2-1 33.1.3 46.8a58.9 58.9 0 0 0 18 9.1 44.2 44.2 0 0 0 3.8-6.2 38.4 38.4 0 0 1-6-2.9l1.5-1.1a42 42 0 0 0 36 0l1.4 1.1a38.4 38.4 0 0 1-6 2.9 44 44 0 0 0 3.8 6.2 58.7 58.7 0 0 0 18-9.1C71 31.1 67.7 17.3 60.1 4.9ZM23.7 38.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 4-2.8 7.2-6.4 7.2Zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.4 3.2 6.4 7.2-2.8 7.2-6.4 7.2Z"/></svg>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:16px;color:#fff;">Nexus Services</div>
+              <div style="font-size:13px;color:#b9bbbe;margin-top:2px;">discord.gg/QcFmAgMBFc</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:18px;margin-bottom:16px;padding:10px 12px;background:rgba(0,0,0,0.2);border-radius:8px;">
+            <div style="text-align:center;">
+              <div style="font-size:18px;font-weight:700;color:#fff;" id="dc-total">—</div>
+              <div style="font-size:11px;color:#b9bbbe;margin-top:2px;">Leden</div>
+            </div>
+            <div style="width:1px;height:30px;background:rgba(255,255,255,0.1);"></div>
+            <div style="text-align:center;">
+              <div style="display:flex;align-items:center;gap:5px;justify-content:center;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
+                <span style="font-size:18px;font-weight:700;color:#fff;" id="dc-online">—</span>
+              </div>
+              <div style="font-size:11px;color:#b9bbbe;margin-top:2px;">Online</div>
+            </div>
+            <div style="width:1px;height:30px;background:rgba(255,255,255,0.1);"></div>
+            <div style="font-size:12px;color:#b9bbbe;line-height:1.4;">Premium FiveM<br>community</div>
+          </div>
+        </div>
+        <div class="dc-bot">
+          <span>Hangout with people who get it.</span>
+          <a href="https://discord.gg/QcFmAgMBFc" target="_blank" class="btn btn-primary" style="padding:6px 14px;font-size:13px;">Join Discord</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <a href="#home" class="footer-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="white"><path d="M4 4l6 16 6-16M4 4h16"/></svg>
+    </div>
+    <div class="logo-text-block">
+      <div class="lt">NEXUS</div>
+      <div class="ls">SERVICES</div>
+    </div>
+  </a>
+
+  <div class="footer-mid">
+    <div class="footer-copy">© 2025 Nexus Services. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#">Terms of Service</a>
+      <span style="color:var(--muted)">•</span>
+      <a href="#">Privacy Policy</a>
+    </div>
+  </div>
+
+  <div class="footer-socials">
+    <a href="https://discord.gg/QcFmAgMBFc" target="_blank" class="soc-btn">
+      <svg width="15" height="12" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.6.5a40.5 40.5 0 0 0-1.8 3.7 54.2 54.2 0 0 0-16.2 0A41.3 41.3 0 0 0 25.8.5 58.4 58.4 0 0 0 11.2 4.9C1.6 19.2-1 33.1.3 46.8a58.9 58.9 0 0 0 18 9.1 44.2 44.2 0 0 0 3.8-6.2 38.4 38.4 0 0 1-6-2.9l1.5-1.1a42 42 0 0 0 36 0l1.4 1.1a38.4 38.4 0 0 1-6 2.9 44 44 0 0 0 3.8 6.2 58.7 58.7 0 0 0 18-9.1C71 31.1 67.7 17.3 60.1 4.9ZM23.7 38.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.5 3.2 6.4 7.2c0 4-2.8 7.2-6.4 7.2Zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2 6.4 3.2 6.4 7.2-2.8 7.2-6.4 7.2Z"/></svg>
+    </a>
+    <a href="#" class="soc-btn" style="font-size:15px;font-weight:700;">𝕏</a>
+    <a href="https://discord.gg/QcFmAgMBFc" target="_blank" class="soc-btn">📷</a>
+  </div>
+</footer>
+
+<script>
+// ── STAR CANVAS ──
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 200; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.4 + 0.3,
+      alpha: Math.random(),
+      speed: Math.random() * 0.008 + 0.003,
+      dir: Math.random() > 0.5 ? 1 : -1
+    });
+  }
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    s.alpha += s.speed * s.dir;
+    if (s.alpha >= 1) { s.dir = -1; }
+    if (s.alpha <= 0.05) { s.dir = 1; }
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${s.alpha.toFixed(2)})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+
+resize();
+initStars();
+drawStars();
+window.addEventListener('resize', () => { resize(); initStars(); });
+
+// ── SNOWFLAKES ──
+const snowWrap = document.getElementById('snow-wrap');
+const flakeChars = ['❄', '❅', '✦', '·'];
+for (let i = 0; i < 28; i++) {
+  const f = document.createElement('div');
+  f.className = 'flake';
+  const fs = Math.random() * 14 + 10;
+  const dur = Math.random() * 10 + 9;
+  const delay = -(Math.random() * 14);
+  f.textContent = flakeChars[Math.floor(Math.random() * flakeChars.length)];
+  f.style.cssText = `left:${Math.random()*100}%;--fs:${fs}px;--dur:${dur}s;--delay:${delay}s;`;
+  snowWrap.appendChild(f);
+}
+
+// ── SCROLL FADE IN ──
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+// ── DISCORD LIVE MEMBER COUNT ──
+const GUILD_ID = '1512444686126682163';
+fetch(`https://discord.com/api/guilds/${GUILD_ID}/widget.json`)
+  .then(r => r.json())
+  .then(data => {
+    const online = data.presence_count ?? 0;
+    const el = document.getElementById('dc-members');
+    if (el) el.textContent = online + ' Online';
+    const onlineEl = document.getElementById('dc-online');
+    if (onlineEl) onlineEl.textContent = online;
+  })
+  .catch(() => {
+    const el = document.getElementById('dc-members');
+    if (el) el.textContent = 'Members Online';
+  });
+
+// Approximate total via invite (requires widget enabled or use static fallback)
+fetch(`https://discord.com/api/invites/QcFmAgMBFc?with_counts=true`)
+  .then(r => r.json())
+  .then(data => {
+    const total = data.approximate_member_count ?? null;
+    const online = data.approximate_presence_count ?? null;
+    const totalEl = document.getElementById('dc-total');
+    const onlineEl = document.getElementById('dc-online');
+    const membersEl = document.getElementById('dc-members');
+    if (total && totalEl) totalEl.textContent = total.toLocaleString();
+    if (online) {
+      if (onlineEl) onlineEl.textContent = online.toLocaleString();
+      if (membersEl) membersEl.textContent = online + ' Online';
+    }
+  })
+  .catch(() => {});
+
+// ── NAV ACTIVE ──
+const sections = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.nav-menu a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+  links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+}, { passive: true });
+</script>
+</body>
+</html>
