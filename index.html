@@ -1,265 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexus Services</title>
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
-
-body{
-    background:#0d1117;
-    color:white;
-}
-
-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px 10%;
-    background:#161b22;
-    border-bottom:1px solid #30363d;
-}
-
-.logo{
-    font-size:28px;
-    font-weight:bold;
-    color:#3b82f6;
-}
-
-nav a{
-    color:white;
-    text-decoration:none;
-    margin-left:20px;
-}
-
-.hero{
-    text-align:center;
-    padding:120px 20px;
-    background:linear-gradient(135deg,#2563eb,#7c3aed);
-}
-
-.hero h1{
-    font-size:60px;
-    margin-bottom:15px;
-}
-
-.hero p{
-    font-size:20px;
-    margin-bottom:30px;
-}
-
-.btn{
-    display:inline-block;
-    padding:15px 30px;
-    background:white;
-    color:black;
-    border-radius:10px;
-    text-decoration:none;
-    font-weight:bold;
-}
-
-section{
-    padding:80px 10%;
-}
-
-h2{
-    text-align:center;
-    margin-bottom:40px;
-}
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
-}
-
-.card{
-    background:#161b22;
-    border:1px solid #30363d;
-    border-radius:12px;
-    padding:25px;
-    transition:0.3s;
-}
-
-.card:hover{
-    transform:translateY(-5px);
-}
-
-.card h3{
-    color:#3b82f6;
-    margin-bottom:10px;
-}
-
-.discord{
-    text-align:center;
-}
-
-.discord iframe{
-    margin-top:20px;
-    border-radius:12px;
-}
-
-footer{
-    text-align:center;
-    padding:25px;
-    background:#161b22;
-    border-top:1px solid #30363d;
-}
-
-@media(max-width:768px){
-    nav{
-        display:none;
-    }
-
-    .hero h1{
-        font-size:40px;
-    }
-}
-</style>
-
-</head>
-<body>
-
-<header>
-    <div class="logo">Nexus Services</div>
-
-    <nav>
-        <a href="#services">Services</a>
-        <a href="#stats">Stats</a>
-        <a href="#reviews">Reviews</a>
-        <a href="#discord">Discord</a>
-    </nav>
-</header>
-
-<section class="hero">
-    <h1>Nexus Services</h1>
-    <p>Lookups • FiveM Services • Tools • Ready Accounts</p>
-
-    <a class="btn" href="https://discord.gg/V7c6vZ2N" target="_blank">
-        Join Discord
-    </a>
-</section>
-
-<section id="services">
-    <h2>🚀 Our Services</h2>
+<section id="store">
+    <h2>🛒 Nexus Store</h2>
 
     <div class="cards">
 
         <div class="card">
-            <h3>🔍 Lookups</h3>
-            <p>Fast and reliable lookup services.</p>
+            <h3>🔍 Premium Lookup</h3>
+            <p>Fast and reliable lookup access.</p>
+            <h4>€4.99</h4>
+            <a class="buy-btn" href="https://discord.gg/V7c6vZ2N">Buy Now</a>
         </div>
 
         <div class="card">
-            <h3>🎮 FiveM Services</h3>
-            <p>Ready accounts, support and services.</p>
+            <h3>🎮 FiveM Ready Account</h3>
+            <p>Ready-to-use FiveM account.</p>
+            <h4>€9.99</h4>
+            <a class="buy-btn" href="https://discord.gg/V7c6vZ2N">Buy Now</a>
         </div>
 
         <div class="card">
-            <h3>⚡ Premium Tools</h3>
-            <p>Useful tools for your projects.</p>
+            <h3>⚡ Custom Bot</h3>
+            <p>Discord bot development.</p>
+            <h4>From €15</h4>
+            <a class="buy-btn" href="https://discord.gg/V7c6vZ2N">Buy Now</a>
         </div>
 
         <div class="card">
-            <h3>🛒 Digital Products</h3>
-            <p>Various digital products available.</p>
+            <h3>🛠️ FiveM Development</h3>
+            <p>Scripts, fixes and server setup.</p>
+            <h4>From €10</h4>
+            <a class="buy-btn" href="https://discord.gg/V7c6vZ2N">Buy Now</a>
         </div>
 
     </div>
 </section>
-
-<section id="stats">
-    <h2>📊 Nexus Services Statistics</h2>
-
-    <div class="cards">
-
-        <div class="card">
-            <h3>🟢 99.9%</h3>
-            <p>Service Uptime</p>
-        </div>
-
-        <div class="card">
-            <h3>⚡ 24/7</h3>
-            <p>Support Available</p>
-        </div>
-
-        <div class="card">
-            <h3>🏆 500+</h3>
-            <p>Happy Customers</p>
-        </div>
-
-        <div class="card">
-            <h3>🔒 Trusted</h3>
-            <p>Secure Services</p>
-        </div>
-
-    </div>
-</section>
-
-<section id="reviews">
-    <h2>⭐ Customer Reviews</h2>
-
-    <div class="cards">
-
-        <div class="card">
-            <h3>⭐⭐⭐⭐⭐</h3>
-            <p>"Snelle levering en uitstekende support."</p>
-            <br>
-            <small>- Mike</small>
-        </div>
-
-        <div class="card">
-            <h3>⭐⭐⭐⭐⭐</h3>
-            <p>"Goede prijzen en betrouwbare services."</p>
-            <br>
-            <small>- Lars</small>
-        </div>
-
-        <div class="card">
-            <h3>⭐⭐⭐⭐⭐</h3>
-            <p>"Binnen enkele minuten geholpen."</p>
-            <br>
-            <small>- Dylan</small>
-        </div>
-
-        <div class="card">
-            <h3>⭐⭐⭐⭐⭐</h3>
-            <p>"Zeker een aanrader voor FiveM services."</p>
-            <br>
-            <small>- Kevin</small>
-        </div>
-
-    </div>
-</section>
-
-<section class="discord" id="discord">
-    <h2>💬 Join Our Discord</h2>
-
-    <iframe
-    src="https://discord.com/widget?id=1512444686126682163&theme=dark"
-    width="350"
-    height="500"
-    allowtransparency="true"
-    frameborder="0">
-    </iframe>
-
-    <br><br>
-
-    <a class="btn" href="https://discord.gg/V7c6vZ2N" target="_blank">
-        Join Now
-    </a>
-</section>
-
-<footer>
-    © 2026 Nexus Services - All Rights Reserved
-</footer>
-
-</body>
-</html>
