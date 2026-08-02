@@ -707,91 +707,153 @@ footer {
 </footer>
 
 <script>
-// ── STAR CANVAS ──
-const canvas = document.getElementById('bg-canvas');
-const ctx = canvas.getContext('2d');
-let stars = [];
-
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+// ── ERROR REPORTING ──
+function reportError(context, error) {
+  console.error(`[nexus] ${context}:`, error);
 }
 
-function initStars() {
-  stars = [];
-  for (let i = 0; i < 200; i++) {
-    stars.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.4 + 0.3,
-      alpha: Math.random(),
-      speed: Math.random() * 0.008 + 0.003,
-      dir: Math.random() > 0.5 ? 1 : -1
-    });
+window.addEventListener('error', e => reportError('uncaught error', e.error || e.message));
+window.addEventListener('unhandledrejection', e => reportError('unhandled rejection', e.reason));
+
+// Runs a feature in isolation so a failure in one does not abort the rest of the page.
+function runFeature(name, fn) {
+  try {
+    fn();
+  } catch (err) {
+    reportError(name, err);
   }
 }
 
-function drawStars() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  stars.forEach(s => {
-    s.alpha += s.speed * s.dir;
-    if (s.alpha >= 1) { s.dir = -1; }
-    if (s.alpha <= 0.05) { s.dir = 1; }
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,255,255,${s.alpha.toFixed(2)})`;
-    ctx.fill();
-  });
-  requestAnimationFrame(drawStars);
+function requireElement(id) {
+  const el = document.getElementById(id);
+  if (!el) throw new Error(`missing required element #${id}`);
+  return el;
 }
 
-resize();
-initStars();
-drawStars();
-window.addEventListener('resize', () => { resize(); initStars(); });
+const FETCH_TIMEOUT_MS = 8000;
+
+async function fetchJSON(url) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) throw new Error(`${url} responded ${res.status} ${res.statusText}`);
+    return await res.json();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// ── STAR CANVAS ──
+runFeature('star canvas', () => {
+  const canvas = requireElement('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('2d canvas context unavailable');
+  let stars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < 200; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.4 + 0.3,
+        alpha: Math.random(),
+        speed: Math.random() * 0.008 + 0.003,
+        dir: Math.random() > 0.5 ? 1 : -1
+      });
+    }
+  }
+
+  function drawStars() {
+    try {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(s => {
+        s.alpha += s.speed * s.dir;
+        if (s.alpha >= 1) { s.dir = -1; }
+        if (s.alpha <= 0.05) { s.dir = 1; }
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${s.alpha.toFixed(2)})`;
+        ctx.fill();
+      });
+    } catch (err) {
+      // Stop the animation loop instead of throwing on every frame.
+      reportError('star canvas frame', err);
+      return;
+    }
+    requestAnimationFrame(drawStars);
+  }
+
+  resize();
+  initStars();
+  drawStars();
+  window.addEventListener('resize', () => runFeature('star canvas resize', () => { resize(); initStars(); }));
+});
 
 // ── SNOWFLAKES ──
-const snowWrap = document.getElementById('snow-wrap');
-const flakeChars = ['❄', '❅', '✦', '·'];
-for (let i = 0; i < 28; i++) {
-  const f = document.createElement('div');
-  f.className = 'flake';
-  const fs = Math.random() * 14 + 10;
-  const dur = Math.random() * 10 + 9;
-  const delay = -(Math.random() * 14);
-  f.textContent = flakeChars[Math.floor(Math.random() * flakeChars.length)];
-  f.style.cssText = `left:${Math.random()*100}%;--fs:${fs}px;--dur:${dur}s;--delay:${delay}s;`;
-  snowWrap.appendChild(f);
-}
+runFeature('snowflakes', () => {
+  const snowWrap = requireElement('snow-wrap');
+  const flakeChars = ['❄', '❅', '✦', '·'];
+  for (let i = 0; i < 28; i++) {
+    const f = document.createElement('div');
+    f.className = 'flake';
+    const fs = Math.random() * 14 + 10;
+    const dur = Math.random() * 10 + 9;
+    const delay = -(Math.random() * 14);
+    f.textContent = flakeChars[Math.floor(Math.random() * flakeChars.length)];
+    f.style.cssText = `left:${Math.random()*100}%;--fs:${fs}px;--dur:${dur}s;--delay:${delay}s;`;
+    snowWrap.appendChild(f);
+  }
+});
 
 // ── SCROLL FADE IN ──
-const obs = new IntersectionObserver(es => {
-  es.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
-}, { threshold: 0.12 });
-document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+runFeature('scroll fade in', () => {
+  if (!('IntersectionObserver' in window)) {
+    // Without observer support, reveal everything rather than leaving it hidden.
+    document.querySelectorAll('.fade-in').forEach(el => el.classList.add('show'));
+    return;
+  }
+  const obs = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+});
 
 // ── DISCORD LIVE MEMBER COUNT ──
 const GUILD_ID = '1512444686126682163';
-fetch(`https://discord.com/api/guilds/${GUILD_ID}/widget.json`)
-  .then(r => r.json())
+const INVITE_CODE = 'QcFmAgMBFc';
+
+fetchJSON(`https://discord.com/api/guilds/${GUILD_ID}/widget.json`)
   .then(data => {
-    const online = data.presence_count ?? 0;
+    if (typeof data.presence_count !== 'number') {
+      throw new Error('widget response is missing presence_count');
+    }
+    const online = data.presence_count;
     const el = document.getElementById('dc-members');
     if (el) el.textContent = online + ' Online';
     const onlineEl = document.getElementById('dc-online');
     if (onlineEl) onlineEl.textContent = online;
   })
-  .catch(() => {
+  .catch(err => {
+    reportError('discord widget count', err);
     const el = document.getElementById('dc-members');
     if (el) el.textContent = 'Members Online';
   });
 
 // Approximate total via invite (requires widget enabled or use static fallback)
-fetch(`https://discord.com/api/invites/QcFmAgMBFc?with_counts=true`)
-  .then(r => r.json())
+fetchJSON(`https://discord.com/api/invites/${INVITE_CODE}?with_counts=true`)
   .then(data => {
     const total = data.approximate_member_count ?? null;
     const online = data.approximate_presence_count ?? null;
+    if (total === null && online === null) {
+      throw new Error('invite response is missing member counts');
+    }
     const totalEl = document.getElementById('dc-total');
     const onlineEl = document.getElementById('dc-online');
     const membersEl = document.getElementById('dc-members');
@@ -801,16 +863,18 @@ fetch(`https://discord.com/api/invites/QcFmAgMBFc?with_counts=true`)
       if (membersEl) membersEl.textContent = online + ' Online';
     }
   })
-  .catch(() => {});
+  .catch(err => reportError('discord invite counts', err));
 
 // ── NAV ACTIVE ──
-const sections = document.querySelectorAll('section[id]');
-const links = document.querySelectorAll('.nav-menu a');
-window.addEventListener('scroll', () => {
-  let cur = '';
-  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
-  links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
-}, { passive: true });
+runFeature('nav active', () => {
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-menu a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+  }, { passive: true });
+});
 </script>
 </body>
 </html>
